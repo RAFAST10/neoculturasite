@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neocultura Ambiental | Licenciamento Integrado</title>
+  <meta name="description" content="Licenciamento ambiental integrado: arqueologia, biologia, geologia, espeleologia, engenharia florestal e topografia em uma única equipe.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --verde-floresta: #1E3F2B;
+      --verde-salvia: #4A6B53;
+      --terracota: #B89778;
+      --areia: #D4BEA8;
+      --ardosia: #2D3134;
+      --cinza-claro: #F4F5F4;
+      --cinza-medio: #EAECEB;
+      --branco: #FFFFFF;
+      --rodape: #1A1D1B;
+      --sombra: 0 10px 30px rgba(30, 63, 43, 0.12);
+      --radius: 14px;
+      --bg: #FFFFFF; --bg-alt: #F4F5F4; --card: #FFFFFF;
+      --texto: #2D3134; --suave: var(--suave); --titulo: #1E3F2B; --borda: #EAECEB;
+      --header: rgba(255,255,255,0.96); --btn: #1E3F2B; --btn-hover: #4A6B53;
+    }
+    [data-theme="dark"] {
+      --bg: #1A1D1B; --bg-alt: #202422; --card: #242926;
+      --texto: #E4E9E6; --suave: #A7AEAA; --titulo: #F4F5F4; --borda: #2F3531;
+      --header: rgba(26,29,27,0.96); --btn: #4A6B53; --btn-hover: #5B7F66;
+      --sombra: 0 10px 30px rgba(0,0,0,0.35);
+      color-scheme: dark;
+    }
+    body, header, .card, .projeto, .logo-cliente, .filtro, .icone, section { transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+    .logo-escuro { display: none; }
+    [data-theme="dark"] .logo-claro { display: none; }
+    [data-theme="dark"] .logo-escuro { display: block; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    body {
+      font-family: 'Inter', 'Open Sans', system-ui, sans-serif;
+      color: var(--texto);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', 'Montserrat', system-ui, sans-serif;
+      line-height: 1.2;
+      color: var(--titulo);
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1200px, 92%); margin: 0 auto; }
+    section { padding: 96px 0; }
+
+    /* ---------- Botões ---------- */
+    .btn {
+      display: inline-block;
+      padding: 14px 26px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primario { background: var(--btn); color: #fff; }
+    .btn-primario:hover { background: var(--btn-hover); }
+    .btn-terra { background: var(--terracota); color: var(--verde-floresta); font-weight: 700; }
+    .btn-terra:hover { background: var(--areia); }
+    /* ---------- Botão WhatsApp e formulário ---------- */
+    .btn-wa { background: #25D366; color: #0b3d1e; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; }
+    .btn-wa:hover { background: #1fb957; }
+    .btn-wa svg { width: 20px; height: 20px; fill: currentColor; }
+    .cta-botoes { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    dialog.modal { margin: auto; border: none; border-radius: var(--radius); padding: 0; width: min(560px, 94vw); max-height: 92vh; background: var(--card); color: var(--texto); box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+    dialog.modal::backdrop { background: rgba(15,25,19,.6); }
+    .modal-in { padding: 30px 28px 26px; }
+    .modal h3 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--titulo); font-size: 1.4rem; margin-bottom: 6px; padding-right: 32px; }
+    .modal .sub { color: var(--suave); font-size: .92rem; margin-bottom: 18px; }
+    .modal-x { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 1.7rem; line-height: 1; color: var(--suave); cursor: pointer; }
+    .modal label { display: block; font-size: .8rem; font-weight: 600; color: var(--suave); margin: 12px 0 5px; }
+    .modal input, .modal select, .modal textarea { width: 100%; font: inherit; font-size: .95rem; padding: 11px 12px; border: 1px solid var(--borda); border-radius: 8px; background: var(--bg); color: var(--texto); }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { outline: 2px solid var(--btn); outline-offset: 1px; }
+    .modal textarea { min-height: 92px; resize: vertical; }
+    .modal .linha2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal .acoes { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+    .modal .acoes .btn { flex: 1 1 200px; text-align: center; justify-content: center; }
+    .modal .aviso { font-size: .78rem; color: var(--suave); margin-top: 12px; }
+    @media (max-width: 520px) { .modal .linha2 { grid-template-columns: 1fr; } .modal-in { padding: 26px 20px 22px; } }
+
+
+    /* ---------- Cabeçalho fixo ---------- */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--header);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--borda);
+      transition: box-shadow 0.3s ease;
+    }
+    header.rolado { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08); }
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 96px;
+    }
+    .logo img { height: 78px; width: auto; }
+    .menu { display: flex; gap: 32px; list-style: none; }
+    .menu a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--texto);
+      position: relative;
+      padding: 6px 0;
+    }
+    .menu a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 2px;
+      background: var(--terracota);
+      transition: width 0.3s ease;
+    }
+    .menu a:hover { color: var(--verde-salvia); }
+    .menu a:hover::after { width: 100%; }
+    .cta-header { padding: 12px 20px; font-size: 0.8rem; }
+    .tema { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--borda); background: var(--card); cursor: pointer; display: grid; place-items: center; margin-left: 14px; }
+    .tema svg { width: 20px; height: 20px; stroke: var(--titulo); fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+    .tema .i-sol { display: none; }
+    [data-theme="dark"] .tema .i-sol { display: block; }
+    [data-theme="dark"] .tema .i-lua { display: none; }
+    .nav-dir { display: flex; align-items: center; }
+    .hamburguer {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px; height: 40px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+    }
+    .hamburguer span { display: block; height: 2px; width: 26px; background: var(--titulo); }
+
+    /* ---------- Seção 1: Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      padding: 176px 0 130px;
+      color: var(--branco);
+      background:
+        radial-gradient(circle at 80% 20%, rgba(184, 151, 120, 0.25), transparent 45%),
+        linear-gradient(135deg, #17321F 0%, var(--verde-floresta) 45%, var(--verde-salvia) 100%);
+      overflow: hidden;
+    }
+    .hero::before {
+      /* Curvas de nível como textura */
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-radial-gradient(ellipse at 70% 60%, transparent 0 46px, rgba(212, 190, 168, 0.12) 46px 48px);
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-conteudo { max-width: 860px; }
+    .hero h1 {
+      color: var(--branco);
+      font-size: clamp(2rem, 3.8vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1.18;
+      text-wrap: balance;
+      margin-bottom: 24px;
+    }
+    .marca-hero { display: inline-flex; align-items: center; gap: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--areia); margin-bottom: 22px; }
+    .marca-hero::before { content: ''; width: 36px; height: 2px; background: var(--terracota); }
+    .hero p.sub2 { font-size: 1rem; color: #C9D3CC; margin-top: -18px; }
+    .hero p.sub {
+      font-size: 1.1rem;
+      color: #E4E9E6;
+      margin-bottom: 36px;
+      max-width: 620px;
+      text-wrap: pretty;
+    }
+
+    /* ---------- Cabeçalho de seção ---------- */
+    .section-head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+    .tag {
+      display: inline-block;
+      color: var(--terracota);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .section-head h2 { font-size: clamp(1.8rem, 3.2vw, 2.5rem); margin-bottom: 16px; }
+    .section-head p { color: var(--suave); font-size: 1.05rem; }
+
+    /* ---------- Seção 2: Cards de especialidades ---------- */
+    .expertise { background: var(--bg); }
+    .grid-areas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--sombra);
+      border: 1px solid var(--borda);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(30, 63, 43, 0.18); }
+    .card-capa {
+      position: relative;
+      height: 200px;
+      background: linear-gradient(135deg, var(--verde-floresta), var(--verde-salvia));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .card-capa img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; }
+    .card-capa.sem-foto::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-radial-gradient(ellipse at 30% 70%, transparent 0 28px, rgba(212, 190, 168, 0.15) 28px 30px);
+    }
+    .card-largo { grid-column: span 2; }
+    .capa-dupla { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 200px; gap: 3px; background: var(--card); }
+    .capa-dupla img { width: 100%; height: 200px; object-fit: cover; border-radius: 0; }
+    .capa-dupla img:first-of-type { border-top-left-radius: var(--radius); }
+    .capa-dupla .icone { z-index: 3; }
+    .capa-dupla img:nth-of-type(2) { border-top-right-radius: var(--radius); }
+    .icone {
+      position: absolute;
+      left: 22px;
+      bottom: -26px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 3px solid var(--areia);
+      display: grid;
+      place-items: center;
+      z-index: 2;
+    }
+    .icone svg { width: 26px; height: 26px; stroke: var(--titulo); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .card-corpo { padding: 40px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+    .card-corpo h3 { font-size: 1.25rem; margin-bottom: 10px; }
+    .card-corpo p { color: var(--suave); font-size: 0.95rem; margin-bottom: 20px; flex: 1; }
+    .equip { border-top: 1px solid var(--borda); padding-top: 14px; }
+    .equip-rotulo { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--terracota); margin-bottom: 6px; }
+    .card-corpo .equip p { font-size: 0.84rem; line-height: 1.55; margin: 0; flex: none; }
+    .saiba-mais {
+      color: var(--titulo);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      transition: color 0.25s ease, letter-spacing 0.25s ease;
+    }
+    .saiba-mais:hover { color: var(--terracota); letter-spacing: 0.12em; }
+
+    /* ---------- Seção 3: Faixa de clientes ---------- */
+    .clientes { background: #FFFFFF; padding: 44px 0; border-top: 1px solid var(--borda); }
+    .rotulo-clientes { text-align: center; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: #7F8589; margin-bottom: 22px; font-weight: 600; }
+    .faixa { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .logo-cliente {
+      height: 112px; padding: 12px 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: #FFFFFF; border: 1px solid #E3E6E4; border-radius: 12px;
+      transition: box-shadow .25s ease, border-color .25s ease, transform .25s ease;
+    }
+    .logo-cliente:hover { border-color: var(--areia); box-shadow: 0 8px 20px rgba(30,63,43,.10); transform: translateY(-2px); }
+    .logo-cliente img { max-height: 100%; max-width: 100%; width: auto; object-fit: contain; }
+    .logo-cliente .nome { font-weight: 600; font-size: 0.8rem; color: #6B7176; letter-spacing: .02em; text-align: center; line-height: 1.3; }
+    .logo-cliente .nome::before { content: ''; display: block; width: 28px; height: 3px; border-radius: 2px; background: var(--areia); margin: 0 auto 10px; }
+
+    /* ---------- Projetos e Empreendimentos ---------- */
+    .projetos { background: var(--bg-alt); }
+    .numeros { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 48px; }
+    .numero { background: var(--verde-floresta); color: var(--branco); border-radius: var(--radius); padding: 28px 20px; text-align: center; }
+    .numero strong { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.4rem; color: var(--areia); line-height: 1; margin-bottom: 8px; }
+    .numero span { font-size: 0.9rem; color: #D5DCD7; }
+    .filtros { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 36px; }
+    .filtro { border: 1px solid var(--areia); background: var(--card); color: var(--titulo); padding: 9px 18px; border-radius: 999px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all .25s ease; font-family: inherit; }
+    .filtro:hover { border-color: var(--terracota); }
+    .filtro.ativo { background: var(--btn); color: #fff; border-color: var(--btn); }
+    .grid-projetos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .projeto { background: var(--card); border-radius: var(--radius); border: 1px solid var(--borda); border-top: 4px solid var(--terracota); padding: 24px 22px; box-shadow: var(--sombra); display: flex; flex-direction: column; gap: 10px; }
+    .projeto.oculto { display: none; }
+    .projeto .meta { font-size: 0.75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--terracota); }
+    .projeto h3 { font-size: 1.05rem; }
+    .projeto p { font-size: 0.9rem; color: var(--suave); flex: 1; }
+    .projeto .selos { display: flex; flex-wrap: wrap; gap: 6px; }
+    .projeto .selos span { background: var(--bg-alt); color: var(--btn-hover); font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+
+    .projeto .cliente { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--borda); }
+    .emblema { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 12px; border-radius: 8px; background: var(--bg-alt); color: var(--suave); font-weight: 700; font-size: 0.82rem; letter-spacing: .04em; text-align: center; }
+    .emblema.pendente { border: 1px dashed var(--areia); font-weight: 500; font-size: 0.75rem; }
+
+    .grid-tipos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .tipo { background: var(--card); border: 1px solid var(--borda); border-top: 4px solid var(--terracota); border-radius: var(--radius); padding: 28px 20px; text-align: center; box-shadow: var(--sombra); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 148px; }
+    .tipo svg { width: 34px; height: 34px; stroke: var(--terracota); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .tipo h3 { font-size: 1.02rem; line-height: 1.3; }
+    .nota-projetos { text-align: center; margin-top: 28px; color: #7F8589; font-size: 0.85rem; }
+
+    /* ---------- Seção 4: Sobre ---------- */
+    .sobre { background: var(--bg); }
+    .sobre-grid {
+      display: block;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .sobre h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 20px; }
+    .sobre p.texto { color: var(--suave); margin-bottom: 28px; font-size: 1.02rem; }
+    .checklist { list-style: none; margin-bottom: 36px; }
+    .checklist li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .checklist svg {
+      flex: 0 0 22px;
+      width: 22px; height: 22px;
+      stroke: var(--verde-salvia);
+      fill: none;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-top: 2px;
+    }
+    .orgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 8px; margin-top: 14px; }
+    .orgs span { display: flex; align-items: center; justify-content: center; text-align: center; white-space: nowrap; min-height: 38px; padding: 6px 10px; background: var(--bg-alt); border: 1px solid var(--borda); border-left: 3px solid var(--terracota); color: var(--titulo); font-size: 0.8rem; font-weight: 600; border-radius: 8px; }
+    .orgs-nota { margin-top: 10px; font-size: 0.78rem; color: var(--suave); font-weight: 400; }
+    .sobre-imagem {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--sombra);
+    }
+    .sobre-imagem img { width: 100%; height: 480px; object-fit: cover; }
+    .sobre-imagem::after {
+      content: '';
+      position: absolute;
+      left: 18px; bottom: 18px;
+      width: 120px; height: 6px;
+      background: var(--terracota);
+      border-radius: 4px;
+    }
+
+    /* ---------- Seção 5: CTA final ---------- */
+    .cta-final {
+      background: var(--verde-floresta);
+      color: var(--branco);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 88px 0;
+    }
+    .cta-final::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-radial-gradient(ellipse at 50% 120%, transparent 0 40px, rgba(212, 190, 168, 0.1) 40px 42px);
+      pointer-events: none;
+    }
+    .cta-final .container { position: relative; z-index: 1; }
+    .cta-final h2 {
+      color: var(--branco);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      max-width: 760px;
+      margin: 0 auto 32px;
+    }
+
+    /* ---------- Seção 6: Rodapé ---------- */
+    .rodape { background: var(--rodape); color: #C9CFCB; padding: 72px 0 0; font-size: 0.95rem; }
+    .rodape-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+      gap: 48px;
+      padding-bottom: 56px;
+    }
+    .rodape h4 {
+      color: var(--branco);
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .rodape ul { list-style: none; }
+    .rodape ul li { margin-bottom: 10px; }
+    .rodape ul a { color: #C9CFCB; transition: color 0.25s ease; }
+    .rodape ul a:hover { color: var(--areia); }
+    .rodape .logo-rodape { height: 76px; width: auto; margin-bottom: 18px; }
+    .rodape p.resumo { color: #A7AEAA; margin-bottom: 22px; }
+    .redes { display: flex; gap: 12px; }
+    .redes a {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid #3A403C;
+      display: grid;
+      place-items: center;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .redes a:hover { background: var(--verde-salvia); border-color: var(--verde-salvia); }
+    .redes svg { width: 18px; height: 18px; fill: #E4E9E6; }
+    .contato-linha { margin-bottom: 10px; color: #A7AEAA; }
+    .rodape-base {
+      border-top: 1px solid #2A2F2C;
+      padding: 22px 0;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #7E8681;
+      font-size: 0.85rem;
+    }
+
+    /* ---------- Responsivo ---------- */
+    @media (max-width: 960px) {
+      .grid-tipos { grid-template-columns: repeat(2, 1fr); }
+      .card-largo { order: 9; }
+      .faixa { grid-template-columns: repeat(3, 1fr); }
+      .numeros { grid-template-columns: repeat(2, 1fr); }
+      .grid-areas { grid-template-columns: repeat(2, 1fr); }
+      .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
+      .sobre-imagem img { height: 360px; }
+      .rodape-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .menu {
+        position: fixed;
+        top: 96px; left: 0; right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--borda);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+      }
+      .menu.aberto { max-height: 420px; }
+      .menu li { border-top: 1px solid var(--borda); }
+      .menu a { display: block; padding: 16px 5%; }
+      .menu a::after { display: none; }
+      .hamburguer { display: flex; }
+      .cta-header { display: none; }
+    }
+    @media (max-width: 620px) {
+      section { padding: 72px 0; }
+      .grid-areas { grid-template-columns: 1fr; }
+      .card-largo { grid-column: span 1; }
+      .capa-dupla { grid-template-columns: 1fr; grid-template-rows: 150px 150px; height: 303px; }
+      .capa-dupla img { height: 150px; }
+      .grid-tipos { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .faixa { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .logo-cliente { height: 96px; padding: 8px; }
+      .orgs { grid-template-columns: 1fr 1fr; }
+      .orgs span { white-space: normal; font-size: 0.78rem; }
+      .orgs span:last-child { grid-column: 1 / -1; }
+      .rotulo-clientes { font-size: 0.68rem; letter-spacing: 0.12em; }
+      .tipo { padding: 22px 12px; min-height: 128px; }
+      .rodape-grid { grid-template-columns: 1fr; }
+      .rodape-base { flex-direction: column; }
+      .logo img { height: 52px; }
+      .btn { padding: 14px 20px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== CABEÇALHO FIXO ===================== -->
+  <header id="topo">
+    <div class="container nav-wrap">
+      <a href="#inicio" class="logo" aria-label="Neocultura Ambiental - início">
+        <img src="assets/logo.svg" alt="Neocultura Ambiental - Licenciamento Integrado" class="logo-claro">
+        <img src="assets/logo-reverso.svg" alt="Neocultura Ambiental - Licenciamento Integrado" class="logo-escuro">
+      </a>
+      <ul class="menu" id="menu">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#quem-somos">Quem Somos</a></li>
+        <li><a href="#servicos">Profissionais &amp; Serviços</a></li>
+        <li><a href="#clientes">Clientes</a></li>
+        <li><a href="#contato">Conteúdos</a></li>
+      </ul>
+      <a href="#contato" data-abrir-form class="btn btn-primario cta-header">Solicitar Orçamento</a>
+      <button class="tema" id="tema" aria-label="Alternar modo claro e escuro" title="Alternar modo claro/escuro">
+        <svg class="i-lua" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="hamburguer" id="hamburguer" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== SEÇÃO 1: HERO ===================== -->
+    <section class="hero" id="inicio">
+      <div class="container">
+        <div class="hero-conteudo">
+          <span class="marca-hero">Neocultura Ambiental</span>
+          <h1>Licenciamento Ambiental Integrado e Soluções Técnicas para Empreendimentos</h1>
+          <p class="sub">Atuamos há mais de uma década com equipe multidisciplinar de profissionais de excelência nas áreas de arqueologia, biologia, geologia, espeleologia, engenharia florestal e topografia, responsáveis por milhares de projetos de licenciamento ambiental.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SEÇÃO 2: ÁREAS DE ATUAÇÃO ===================== -->
+    <section class="expertise" id="servicos">
+      <div class="container">
+        <div class="section-head">
+          <span class="tag">Nossa expertise</span>
+          <h2>Áreas de Atuação e Equipe Multidisciplinar</h2>
+          <p>Soluções técnicas completas reunindo especialistas de diversas áreas para atender todas as exigências dos órgãos ambientais.</p>
+        </div>
+
+        <div class="grid-areas">
+
+          <!-- 1. Arqueologia -->
+          <article class="card">
+            <div class="card-capa">
+              <img src="assets/arqueologia.jpg" alt="Escavação arqueológica com pincel e ferramentas de campo">
+              <div class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-6h6v6"/></svg>
+              </div>
+            </div>
+            <div class="card-corpo">
+              <h3>Arqueologia</h3>
+              <p>Diagnóstico, prospecção, resgate arqueológico e gestão de patrimônio histórico e cultural junto ao IPHAN.</p>
+              <div class="equip"><span class="equip-rotulo">Tecnologias e equipamentos</span><p>GPS geodésico · sistema RTK · estação total · drones (VANT/RPA) · sensor LiDAR · laser scanner terrestre (TLS).</p></div>
+            </div>
+          </article>
+
+          <!-- 2. Biologia -->
+          <article class="card">
+            <div class="card-capa">
+              <img src="assets/biologia.jpg" alt="Profissional observando fauna com binóculos em mata nativa">
+              <div class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 21c-4-3-7-6.5-7-10a7 7 0 0 1 14 0c0 3.5-3 7-7 10z"/><path d="M12 11v-1M12 13v2"/></svg>
+              </div>
+            </div>
+            <div class="card-corpo">
+              <h3>Biologia</h3>
+              <p>Inventários de fauna e flora, monitoramento ambiental, resgate de germoplasma e estudos de biodiversidade.</p>
+              <div class="equip"><span class="equip-rotulo">Tecnologias e equipamentos</span><p>drones (VANT/RPA) · drones com câmera termal · kits de eDNA (DNA ambiental) · gravadores acústicos autônomos (bioacústica) · detectores ultrassônicos de morcegos · sonda multiparâmetro.</p></div>
+            </div>
+          </article>
+
+
+
+
+          <!-- 5. Engenharia Florestal -->
+          <article class="card">
+            <div class="card-capa">
+              <img src="assets/engenharia-florestal.jpg" alt="Técnicos medindo com trena em área de floresta nativa">
+              <div class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 22V12M12 12c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/></svg>
+              </div>
+            </div>
+            <div class="card-corpo">
+              <h3>Engenharia Florestal</h3>
+              <p>Inventário florestal, planos de recuperação de áreas degradadas (PRAD), manejo sustentável e supressão vegetal.</p>
+              <div class="equip"><span class="equip-rotulo">Tecnologias e equipamentos</span><p>drones (VANT/RPA) · sensor LiDAR · câmeras multiespectrais · GPS geodésico · sistema RTK · estação total.</p></div>
+            </div>
+          </article>
+          <!-- 3. Geologia e Espeleologia -->
+          <article class="card card-largo">
+            <div class="card-capa capa-dupla">
+              <img src="assets/geologia.png" alt="Geólogo analisando amostra e técnica com tablet de modelo geológico em área de obra com sondagem">
+              <img src="assets/espeleologia.jpg" alt="Equipe de espeleologia com capacetes analisando mapa dentro de caverna">
+              <div class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M2 20l6-9 4 5 3-4 7 8H2z"/></svg>
+              </div>
+            </div>
+            <div class="card-corpo">
+              <h3>Geologia e Espeleologia</h3>
+              <p>Mapeamento geológico, estudos geotécnicos, hidrogeologia, análise de solos e mitigação de riscos geológicos. Prospecção, topografia subterrânea, análise de relevância e planos de manejo de cavidades naturais subterrâneas.</p>
+              <div class="equip"><span class="equip-rotulo">Tecnologias e equipamentos</span><p>GPS geodésico · sistema RTK · estação total · drones (VANT/RPA) · sensor LiDAR · laser scanner terrestre (TLS) · LiDAR portátil (SLAM) · trena a laser com clinômetro digital (DistoX) · data loggers de microclima · sismógrafos de engenharia · sonda multiparâmetro · ADCP · ecobatímetro · estações de monitoramento contínuo com telemetria.</p></div>
+            </div>
+          </article>
+
+          <!-- 6. Topografia -->
+          <article class="card">
+            <div class="card-capa">
+              <img src="assets/topografia.jpg" alt="Técnico com colete e capacete ao lado de receptor GPS em tripé">
+              <div class="icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+              </div>
+            </div>
+            <div class="card-corpo">
+              <h3>Topografia e Geoprocessamento</h3>
+              <p>Levantamento planialtimétrico, georreferenciamento de imóveis rurais e urbanos, aerofotogrametria com drones e mapeamento GIS.</p>
+              <div class="equip"><span class="equip-rotulo">Tecnologias e equipamentos</span><p>GPS geodésico · sistema RTK · estação total · drones (VANT/RPA) · sensor LiDAR · laser scanner terrestre (TLS) · LiDAR portátil (SLAM) · trena a laser com clinômetro digital (DistoX).</p></div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROJETOS E EMPREENDIMENTOS ===================== -->
+    <section class="projetos" id="projetos">
+      <div class="container">
+        <div class="section-head">
+          <span class="tag">Experiência comprovada</span>
+          <h2>Projetos e Empreendimentos</h2>
+          <p>Atuação em energia, infraestrutura, indústria, mineração e patrimônio histórico.</p>
+        </div>
+        <div class="numeros">
+          <div class="numero"><strong>11</strong><span>anos de atuação</span></div>
+          <div class="numero"><strong>26</strong><span>usinas hidrelétricas, PCHs e CGHs</span></div>
+          <div class="numero"><strong>11</strong><span>linhas de transmissão</span></div>
+          <div class="numero"><strong>4</strong><span>estados atendidos</span></div>
+        </div>
+        <div class="grid-tipos">
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18c3-3 6 3 9 0s6 3 9 0"/><path d="M5 14V6h14v8"/><path d="M9 14V9M15 14V9"/></svg><h3>Usinas hidrelétricas e PCHs</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M7 21l5-14 5 14M6 9h12M8 13h8"/></svg><h3>Linhas de transmissão</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="1.6"/><path d="M12 8.4V2M10.6 10.8L5 14M13.4 10.8L19 14M12 12v10"/></svg><h3>Complexos eólicos</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9l6 4V9l6 4V5h3v16z"/></svg><h3>Complexos industriais</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20l5-9 4 5 3-4 6 8z"/><path d="M14 6l3 3M17 3l-3 3"/></svg><h3>Mineração</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3L5 21M16 3l3 18M12 4v3M12 11v3M12 18v3"/></svg><h3>Rodovias</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V12M12 12c0-4 3-7 7-7 0 4-3 7-7 7zM12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/></svg><h3>Bioenergia</h3></div>
+          <div class="tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V10l7-6 7 6v11M9 21v-6h6v6"/></svg><h3>Patrimônio histórico e obras urbanas</h3></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SEÇÃO 4: SOBRE A EMPRESA ===================== -->
+    <section class="sobre" id="quem-somos">
+      <div class="container sobre-grid">
+        <div>
+          <span class="tag">Excelência em licenciamento integrado</span>
+          <h2>A Neocultura Ambiental</h2>
+          <p class="texto">Quando arqueologia, geociências, biologia e engenharia trabalham juntas desde o início, o licenciamento (LP, LI e LO) deixa de depender de etapas sequenciais e retrabalhos. Isso reduz custos e prazos para o empreendedor e aumenta a segurança do processo.</p>
+          <ul class="checklist">
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <div>Equipe técnica própria, referência e altamente especializada</div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <div>
+                Atendimento rigoroso às exigências dos órgãos ambientais e intervenientes
+                <div class="orgs"><span>IBAMA</span><span>OEMA</span><span>Órgãos municipais</span><span>IPHAN</span><span>ICMBio</span><span>FUNAI</span><span>Fundação Palmares</span><span>ANA</span><span>ANM</span><span>Marinha</span><span>Ministério da Saúde</span></div>
+                <p class="orgs-nota">OEMA: órgãos estaduais de meio ambiente, como CETESB, INEA e SEMAD.</p>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+              <div>Tecnologia de ponta em todas as etapas do licenciamento ambiental, em todas as nossas áreas de atuação
+                <p class="orgs-nota">A disponibilização de equipamentos específicos de campo, sensoriamento, georreferenciamento ou apoio analítico ocorre de forma modular, de acordo com a demanda de cada projeto, garantindo adequação técnica e viabilidade econômica sem onerar estruturas ociosas.</p>
+              </div>
+            </li>
+          </ul>
+          <a href="#contato" data-abrir-form class="btn btn-primario">Agende uma reunião com nossos especialistas</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FAIXA DE CLIENTES (final da página) ===================== -->
+    <section class="clientes" id="clientes">
+      <div class="container">
+        <p class="rotulo-clientes">Empresas que confiam em nossa engenharia</p>
+        <div class="faixa" aria-label="Clientes">
+          <div class="logo-cliente"><img src="assets/clientes/sinop.png" alt="Companhia Energética Sinop"></div>
+          <div class="logo-cliente"><img src="assets/clientes/votorantim.png" alt="Votorantim"></div>
+          <div class="logo-cliente"><img src="assets/clientes/enel.png" alt="Enel Green Power"></div>
+          <div class="logo-cliente"><img src="assets/clientes/prefeitura-cuiaba.png" alt="Prefeitura de Cuiabá"></div>
+          <div class="logo-cliente"><img src="assets/clientes/prefeitura-vila-bela.png" alt="Prefeitura de Vila Bela"></div>
+          <div class="logo-cliente"><img src="assets/clientes/shalon.png" alt="Shalom Mineradora"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SEÇÃO 5: CTA FINAL ===================== -->
+    <section class="cta-final" id="contato">
+      <div class="container">
+        <h2>Precisa de suporte técnico para o licenciamento do seu projeto? Fale com nossa equipe.</h2>
+        <div class="cta-botoes">
+          <a href="#contato" data-abrir-form class="btn btn-terra">Solicitar proposta</a>
+          <a href="https://wa.me/5514996399147?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Neocultura%20Ambiental%20e%20gostaria%20de%20falar%20com%20a%20equipe%20sobre%20um%20projeto." target="_blank" rel="noopener" class="btn btn-wa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.3-.5.1-1.1.1-1.8-.1-.4-.1-.9-.3-1.5-.6-2.7-1.2-4.4-3.9-4.5-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>Falar no WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== SEÇÃO 6: RODAPÉ ===================== -->
+  <footer class="rodape">
+    <div class="container rodape-grid">
+
+      <div>
+        <img src="assets/logo-reverso.svg" alt="Neocultura Ambiental" class="logo-rodape">
+        <p class="resumo">Licenciamento ambiental integrado com equipe multidisciplinar, unindo ciência, agilidade regulatória e sustentabilidade.</p>
+        <div class="redes">
+          <a href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM17.5 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 0 1 12 4zm-3.2 4.2c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3l-1.9-.9c-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6l.4-.5.3-.5c.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Links rápidos</h4>
+        <ul>
+          <li><a href="#quem-somos">Quem Somos</a></li>
+          <li><a href="#servicos">Profissionais</a></li>
+          <li><a href="#clientes">Clientes</a></li>
+          <li><a href="#contato">Conteúdos</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Áreas técnicas</h4>
+        <ul>
+          <li><a href="#servicos">Arqueologia</a></li>
+          <li><a href="#servicos">Biologia</a></li>
+          <li><a href="#servicos">Geologia</a></li>
+          <li><a href="#servicos">Espeleologia</a></li>
+          <li><a href="#servicos">Engenharia Florestal</a></li>
+          <li><a href="#servicos">Topografia</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contato</h4>
+        <p class="contato-linha">Rua Ivan Rodrigues Arrais, 125<br>Vila Balneário São João<br>Cuiabá – MT, 78085-055</p>
+        <p class="contato-linha">Tel.: (14) 99639-9147</p>
+        <p class="contato-linha">E-mail: <a href="mailto:contatogmce@gmail.com">contatogmce@gmail.com</a></p>
+        <p class="contato-linha">WhatsApp: <a href="https://wa.me/5514996399147" target="_blank" rel="noopener">(14) 99639-9147</a></p>
+        <p class="contato-linha">CNPJ: 21.716.574/0001-30</p>
+      </div>
+
+    </div>
+
+    <div class="container rodape-base">
+      <span>© 2026 Neocultura Ambiental - Licenciamento Integrado. Todos os direitos reservados.</span>
+      <span>Responsável técnico: [nome e registro no conselho]</span>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="modal-form" aria-labelledby="modal-titulo">
+    <div class="modal-in">
+      <button type="button" class="modal-x" id="modal-fechar" aria-label="Fechar">&times;</button>
+      <h3 id="modal-titulo">Solicitar proposta</h3>
+      <p class="sub">Conte brevemente sobre o seu projeto. Retornamos o contato o mais rápido possível.</p>
+      <form id="form-proposta">
+        <label for="f-nome">Nome *</label>
+        <input id="f-nome" required autocomplete="name">
+        <div class="linha2">
+          <div><label for="f-empresa">Empresa</label><input id="f-empresa" autocomplete="organization"></div>
+          <div><label for="f-tel">Telefone / WhatsApp</label><input id="f-tel" type="tel" autocomplete="tel"></div>
+        </div>
+        <label for="f-email">E-mail *</label>
+        <input id="f-email" type="email" required autocomplete="email">
+        <label for="f-area">Área de interesse</label>
+        <select id="f-area">
+          <option value="">Ainda não sei / preciso de orientação</option>
+          <option>Licenciamento ambiental integrado</option>
+          <option>Arqueologia</option>
+          <option>Biologia</option>
+          <option>Engenharia Florestal</option>
+          <option>Geologia e Espeleologia</option>
+          <option>Topografia e Geoprocessamento</option>
+          <option>Outro</option>
+        </select>
+        <label for="f-msg">Sobre o projeto</label>
+        <textarea id="f-msg" placeholder="Tipo de empreendimento, localização, fase do licenciamento..."></textarea>
+        <div class="acoes">
+          <button type="submit" class="btn btn-primario">Enviar por e-mail</button>
+          <a href="#" id="f-wa" target="_blank" rel="noopener" class="btn btn-wa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.3-.5.1-1.1.1-1.8-.1-.4-.1-.9-.3-1.5-.6-2.7-1.2-4.4-3.9-4.5-4.1-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>Enviar pelo WhatsApp</a>
+        </div>
+        <p class="aviso">Ao enviar, abrimos seu aplicativo de e-mail ou o WhatsApp com a mensagem pronta. Se preferir, escreva para contatogmce@gmail.com.</p>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    // Sombra no cabeçalho ao rolar
+    const header = document.getElementById('topo');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('rolado', window.scrollY > 40);
+    });
+
+    // Menu hambúrguer no mobile
+    const botao = document.getElementById('hamburguer');
+    const menu = document.getElementById('menu');
+    botao.addEventListener('click', () => {
+      const aberto = menu.classList.toggle('aberto');
+      botao.setAttribute('aria-expanded', aberto);
+    });
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('aberto');
+        botao.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Logos de clientes: se o arquivo ainda não existir, mostra o nome em texto
+    document.querySelectorAll('.logo-cliente img').forEach(img => {
+      const trocar = () => { const t = document.createElement('span'); t.className = 'nome'; t.textContent = img.alt; img.replaceWith(t); };
+      if (img.complete && img.naturalWidth === 0) trocar(); else img.addEventListener('error', trocar);
+    });
+
+    // Formulário de proposta (e-mail + WhatsApp)
+    const modal = document.getElementById('modal-form');
+    const form = document.getElementById('form-proposta');
+    const waBtn = document.getElementById('f-wa');
+    const EMAIL = 'contatogmce@gmail.com', WA = '5514996399147';
+    const val = id => document.getElementById(id).value.trim();
+    function texto() {
+      const nome = val('f-nome'), emp = val('f-empresa'), area = val('f-area'), msg = val('f-msg'), tel = val('f-tel'), mail = val('f-email');
+      const l = ['Olá! Vim pelo site da Neocultura Ambiental.'];
+      l.push('Meu nome é ' + nome + (emp ? ', da empresa ' + emp : '') + '.');
+      l.push(area ? 'Tenho interesse em: ' + area + '.' : 'Gostaria de uma orientação sobre qual serviço atende o meu projeto.');
+      if (msg) l.push('Sobre o projeto: ' + msg);
+      const c = [tel && 'Tel.: ' + tel, mail && 'E-mail: ' + mail].filter(Boolean);
+      if (c.length) l.push('Contato: ' + c.join(' | '));
+      return l.join('\n');
+    }
+    document.querySelectorAll('[data-abrir-form]').forEach(a => a.addEventListener('click', e => {
+      e.preventDefault();
+      if (modal.showModal) modal.showModal(); else modal.setAttribute('open', '');
+    }));
+    document.getElementById('modal-fechar').addEventListener('click', () => modal.close());
+    modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
+    waBtn.addEventListener('click', () => { waBtn.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(texto()); });
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const l = document.createElement('a');
+      l.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Solicitação de proposta - ' + val('f-nome')) + '&body=' + encodeURIComponent(texto());
+      l.target = '_blank'; l.rel = 'noopener';
+      document.body.appendChild(l); l.click(); l.remove();
+    });
+
+    // Modo claro / escuro
+    const raiz = document.documentElement;
+    try { if (localStorage.getItem('tema') === 'dark') raiz.setAttribute('data-theme', 'dark'); } catch (e) {}
+    document.getElementById('tema').addEventListener('click', () => {
+      const escuro = raiz.getAttribute('data-theme') !== 'dark';
+      if (escuro) raiz.setAttribute('data-theme', 'dark'); else raiz.removeAttribute('data-theme');
+      try { localStorage.setItem('tema', escuro ? 'dark' : 'light'); } catch (e) {}
+    });
+  </script>
+</body>
+</html>
